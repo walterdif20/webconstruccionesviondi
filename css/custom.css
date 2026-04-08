@@ -104,6 +104,14 @@ img {
     border-radius: 999px;
 }
 
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+}
+
 .navbar .nav-link:hover,
 .navbar .nav-link:focus,
 .navbar .nav-link.active {
@@ -202,6 +210,28 @@ img {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-md);
     padding: 0.95rem;
+}
+
+.hero-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.highlight-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(15, 23, 42, 0.25);
+}
+
+.highlight-pill i {
+    color: #fbbf24;
 }
 
 .hero-meta-item span {
@@ -376,6 +406,34 @@ img {
 .process-step p {
     margin: 0.45rem 0 0;
     color: rgba(255, 255, 255, 0.94);
+}
+
+.process-strip {
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: var(--card-shadow);
+    padding: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.process-step {
+    border-radius: 18px;
+    padding: 1.2rem;
+    background: linear-gradient(145deg, rgba(37, 99, 235, 0.08), rgba(245, 158, 11, 0.12));
+}
+
+.process-step span {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--secondary-color);
+    letter-spacing: 0.08em;
+}
+
+.process-step p {
+    margin: 0.45rem 0 0;
+    color: #334155;
 }
 
 .portfolio-grid {
@@ -570,6 +628,25 @@ footer a:hover {
 
     .about-card {
         padding: 2.2rem;
+    }
+
+    .navbar .navbar-collapse {
+        margin-top: 0.8rem;
+        border-radius: 16px;
+        padding: 0.65rem;
+        background: #fff;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .navbar .nav-link {
+        border-radius: 10px;
+        padding: 0.7rem 0.9rem;
+    }
+
+    .navbar .nav-link:hover,
+    .navbar .nav-link:focus,
+    .navbar .nav-link.active {
+        background: rgba(37, 99, 235, 0.08);
     }
 }
 
