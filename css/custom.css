@@ -24,7 +24,17 @@ body {
     font-family: 'Inter', sans-serif;
     color: var(--text);
     background: var(--bg);
-    line-height: 1.65;
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+.navbar-brand,
+.nav-link,
+.section-title,
+.hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
 }
 
 h1,
@@ -67,7 +77,9 @@ img {
 
 .section-subtitle {
     color: var(--text-soft);
-    max-width: 680px;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .navbar {
@@ -117,7 +129,7 @@ img {
 }
 
 .hero-content {
-    max-width: 760px;
+    max-width: 700px;
 }
 
 .hero-eyebrow {
@@ -132,15 +144,16 @@ img {
 
 .hero-title {
     margin: 1rem 0;
-    font-size: clamp(2.2rem, 5vw, 4rem);
-    line-height: 1.08;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.12;
     font-weight: 700;
 }
 
 .hero-description {
     margin-bottom: 1.6rem;
     color: rgba(255, 255, 255, 0.86);
-    max-width: 670px;
+    max-width: 560px;
+    font-size: 1rem;
 }
 
 .hero-cta .btn {
@@ -179,7 +192,7 @@ img {
 }
 
 .hero-meta-item strong {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.93);
     border: 1px solid rgba(255, 255, 255, 0.24);
@@ -222,8 +235,24 @@ img {
     border-radius: var(--radius);
 }
 
+#empresa,
+#servicios,
+#portfolio,
+#contacto {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+}
+
+.about-card,
+.service-card,
+.contact-option {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
 .about-card {
-    padding: 2.3rem;
+    padding: 2rem;
     box-shadow: var(--shadow);
 }
 
@@ -249,6 +278,7 @@ img {
 
 .values-list li {
     color: var(--text-soft);
+    line-height: 1.5;
 }
 
 .values-list i {
@@ -267,7 +297,7 @@ img {
 }
 
 .service-card {
-    padding: 1.8rem;
+    padding: 1.4rem;
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -297,6 +327,7 @@ img {
 .service-card p {
     color: var(--text-soft);
     margin: 0;
+    font-size: 0.95rem;
 }
 
 .portfolio-grid {
@@ -336,13 +367,13 @@ img {
 
 .portfolio-overlay h4 {
     margin: 0.3rem 0 0;
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 .contact-cta {
     background: #2f2018;
     border-radius: var(--radius);
-    padding: 2.5rem;
+    padding: 2.2rem;
     color: #fff;
 }
 
@@ -361,7 +392,7 @@ img {
 .contact-option {
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.2);
-    padding: 1.2rem;
+    padding: 1rem;
 }
 
 .contact-option i {
@@ -435,10 +466,6 @@ footer {
         min-height: auto;
         padding-top: 7.3rem;
         padding-bottom: 3.5rem;
-    }
-
-    .hero-meta {
-        grid-template-columns: 1fr;
     }
 
     .hero-meta {
