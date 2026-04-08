@@ -185,6 +185,61 @@ img {
 .hero-meta-item strong {
     font-size: 0.9rem;
     font-weight: 600;
+    color: rgba(255, 255, 255, 0.93);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(20, 12, 9, 0.25);
+}
+
+.highlight-pill i {
+    color: #ffb496;
+}
+
+#empresa,
+#portfolio,
+#contacto {
+    position: relative;
+}
+
+#empresa::before,
+#portfolio::before,
+#contacto::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0));
+    pointer-events: none;
+}
+
+#empresa,
+#servicios,
+#portfolio,
+#contacto {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+}
+
+.about-card,
+.service-card,
+.contact-option {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+#empresa,
+#servicios,
+#portfolio,
+#contacto {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+}
+
+.about-card,
+.service-card,
+.contact-option {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
 }
 
 #empresa,
@@ -416,7 +471,9 @@ footer {
     }
 
     .hero {
-        padding-top: 7rem;
+        min-height: auto;
+        padding-top: 7.3rem;
+        padding-bottom: 3.5rem;
     }
 
     .hero-meta {
@@ -436,6 +493,7 @@ footer {
 
     .hero-cta .btn {
         width: 100%;
+        justify-content: center;
     }
 
     .contact-cta {
