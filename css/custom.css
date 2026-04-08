@@ -1,14 +1,14 @@
 :root {
     --bg: #f6f4f1;
     --surface: #ffffff;
-    --surface-muted: #f2eeea;
-    --text: #1f1b18;
-    --text-soft: #6d6258;
-    --brand: #8a341f;
-    --brand-dark: #5f2315;
-    --line: #e6ddd4;
+    --surface-muted: #ece3db;
+    --text: #161311;
+    --text-soft: #4f443b;
+    --brand: #8f2f18;
+    --brand-dark: #4f1a10;
+    --line: #d7c8bb;
     --radius: 14px;
-    --shadow: 0 10px 24px rgba(40, 24, 18, 0.06);
+    --shadow: 0 12px 26px rgba(40, 24, 18, 0.1);
 }
 
 * {
@@ -25,16 +25,6 @@ body {
     color: var(--text);
     background: var(--bg);
     line-height: 1.6;
-}
-
-h1,
-h2,
-h3,
-.navbar-brand,
-.nav-link,
-.section-title,
-.hero-eyebrow {
-    font-family: 'Montserrat', sans-serif;
 }
 
 h1,
@@ -83,8 +73,8 @@ img {
 }
 
 .navbar {
-    background: rgba(246, 244, 241, 0.95);
-    border-bottom: 1px solid var(--line);
+    background: rgba(243, 239, 234, 0.98);
+    border-bottom: 1px solid #cdb9aa;
 }
 
 .navbar-brand img {
@@ -110,7 +100,7 @@ img {
 .navbar .nav-link:hover,
 .navbar .nav-link:focus {
     color: var(--brand-dark);
-    background: rgba(138, 52, 31, 0.08);
+    background: rgba(143, 47, 24, 0.16);
 }
 
 .navbar-toggler {
@@ -123,7 +113,7 @@ img {
 
 .hero {
     padding: 8rem 0 5rem;
-    background: linear-gradient(120deg, rgba(31, 27, 24, 0.82), rgba(95, 35, 21, 0.62)),
+    background: linear-gradient(120deg, rgba(18, 15, 13, 0.9), rgba(79, 26, 16, 0.72)),
         url('../images/slider_img3.jpg') center/cover no-repeat;
     color: #fff;
 }
@@ -151,7 +141,7 @@ img {
 
 .hero-description {
     margin-bottom: 1.6rem;
-    color: rgba(255, 255, 255, 0.86);
+    color: rgba(255, 255, 255, 0.95);
     max-width: 560px;
     font-size: 1rem;
 }
@@ -163,9 +153,10 @@ img {
 }
 
 .hero-cta .btn-warning {
-    background: var(--surface);
+    background: #ffffff;
     color: var(--brand-dark) !important;
-    border: none;
+    border: 1px solid #f5d8cb;
+    font-weight: 700;
 }
 
 .hero-meta {
@@ -176,8 +167,8 @@ img {
 }
 
 .hero-meta-item {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(0, 0, 0, 0.24);
+    border: 1px solid rgba(255, 255, 255, 0.32);
     border-radius: var(--radius);
     padding: 0.9rem;
 }
@@ -187,7 +178,7 @@ img {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.82);
     margin-bottom: 0.3rem;
 }
 
@@ -251,6 +242,22 @@ img {
     border-radius: var(--radius);
 }
 
+#empresa,
+#servicios,
+#portfolio,
+#contacto {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+}
+
+.about-card,
+.service-card,
+.contact-option {
+    background: var(--surface);
+    border: 1px solid #ccb8a9;
+    border-radius: var(--radius);
+}
+
 .about-card {
     padding: 2rem;
     box-shadow: var(--shadow);
@@ -302,8 +309,9 @@ img {
 }
 
 .service-card:hover {
-    border-color: #d4b8a8;
+    border-color: #a65a45;
     transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(79, 26, 16, 0.14);
 }
 
 .service-card .service-icon {
@@ -353,7 +361,7 @@ img {
     position: absolute;
     inset: auto 0 0;
     padding: 1rem;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(20, 14, 12, 0.74));
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(14, 10, 8, 0.9));
     color: #fff;
 }
 
@@ -371,7 +379,7 @@ img {
 }
 
 .contact-cta {
-    background: #2f2018;
+    background: #25160f;
     border-radius: var(--radius);
     padding: 2.2rem;
     color: #fff;
@@ -390,8 +398,8 @@ img {
 }
 
 .contact-option {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
     padding: 1rem;
 }
 
@@ -414,8 +422,8 @@ img {
 }
 
 footer {
-    background: #1f1814;
-    color: rgba(255, 255, 255, 0.72);
+    background: #140d0a;
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .footer-brand {
@@ -425,7 +433,7 @@ footer {
 
 .footer-meta {
     font-size: 0.86rem;
-    color: rgba(255, 255, 255, 0.56);
+    color: rgba(255, 255, 255, 0.72);
 }
 
 .social-links a {
