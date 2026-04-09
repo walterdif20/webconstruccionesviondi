@@ -83,11 +83,11 @@ img {
 }
 
 .navbar-brand img {
-    height: 44px !important;
+    height: 68px !important;
 }
 
 .navbar-brand span {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.03em;
     color: var(--brand-900);
