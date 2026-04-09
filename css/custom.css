@@ -136,6 +136,7 @@ img {
     font-size: 0.76rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    letter-spacing: 0.12em;
 }
 
 .hero-title {
@@ -498,6 +499,7 @@ footer {
 
     .hero-cta .btn {
         width: 100%;
+        justify-content: center;
     }
 
     .about-card,
