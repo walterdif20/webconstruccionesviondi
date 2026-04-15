@@ -330,6 +330,24 @@
 
       const portfolioFolder = 'images/portfolio';
       const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'];
+      const githubRepoApi =
+        'https://api.github.com/repos/walterdif20/webconstruccionesviondi/contents/images/portfolio';
+      const portfolioFallbackImages = [
+        'Vivienda-Construcción de vivienda llave en mano copy 2.jpg',
+        'Vivienda-Construcción de vivienda llave en mano copy 3.jpg',
+        'Vivienda-Construcción de vivienda llave en mano copy 4.jpg',
+        'Vivienda-Construcción de vivienda llave en mano copy 5.jpg',
+        'Vivienda-Construcción de vivienda llave en mano copy.jpg',
+        'Vivienda-Construcción de vivienda llave en mano.jpg',
+      ];
+
+      const buildImagePath = (fileName) => {
+        const encodedName = fileName
+          .split('/')
+          .map((segment) => encodeURIComponent(segment))
+          .join('/');
+        return `${portfolioFolder}/${encodedName}`;
+      };
 
       const stripExtension = (fileName) => fileName.replace(/\.[^.]+$/, '');
 
@@ -381,7 +399,7 @@
           slide.innerHTML = `
             <div class="portfolio-slide-grid" style="--columns: ${chunk.length};">
               ${chunk
-                .map((fileName) => createPortfolioCard(`${portfolioFolder}/${fileName}`, fileName))
+                .map((fileName) => createPortfolioCard(buildImagePath(fileName), fileName))
                 .join('')}
             </div>
           `;
@@ -390,38 +408,87 @@
         }
       };
 
+      const extractImageFilesFromDirectory = (doc) =>
+        Array.from(doc.querySelectorAll('a'))
+          .map((link) => link.getAttribute('href') || '')
+          .filter((href) => imageExtensions.some((ext) => href.toLowerCase().endsWith(ext)))
+          .map((href) => decodeURIComponent(href.split('/').pop()))
+          .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
+
+      const fetchImageFilesFromDirectory = async () => {
+        const response = await fetch(`${portfolioFolder}/`);
+        if (!response.ok) {
+          throw new Error(`No se pudo listar el directorio (${response.status}).`);
+        }
+        const directoryMarkup = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(directoryMarkup, 'text/html');
+        return extractImageFilesFromDirectory(doc);
+      };
+
+      const fetchImageFilesFromGitHubApi = async () => {
+        const response = await fetch(githubRepoApi, {
+          headers: { Accept: 'application/vnd.github+json' },
+        });
+
+        if (!response.ok) {
+          throw new Error(`No se pudo consultar GitHub API (${response.status}).`);
+        }
+
+        const payload = await response.json();
+        if (!Array.isArray(payload)) {
+          throw new Error('Respuesta inesperada de GitHub API.');
+        }
+
+        return payload
+          .map((entry) => entry && entry.name)
+          .filter((name) => typeof name === 'string')
+          .filter((name) => imageExtensions.some((ext) => name.toLowerCase().endsWith(ext)))
+          .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
+      };
+
+      const renderPortfolio = (imageFiles) => {
+        portfolioCarouselInner.dataset.imageFiles = imageFiles.join('|');
+        buildPortfolioSlides(imageFiles);
+
+        const allSlides = portfolioCarouselInner.querySelectorAll('.carousel-item');
+        if (allSlides.length > 0) {
+          allSlides[0].classList.add('active');
+        }
+
+        if (allSlides.length <= 1) {
+          portfolioCarousel
+            .querySelectorAll('.carousel-control-prev, .carousel-control-next')
+            .forEach((control) => control.classList.add('d-none'));
+        }
+      };
+
       const loadPortfolioImages = async () => {
         if (!portfolioCarousel || !portfolioCarouselInner) return;
 
         try {
-          const response = await fetch(`${portfolioFolder}/`);
-          const directoryMarkup = await response.text();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(directoryMarkup, 'text/html');
-          const links = Array.from(doc.querySelectorAll('a'));
-
-          const imageFiles = links
-            .map((link) => link.getAttribute('href') || '')
-            .filter((href) => imageExtensions.some((ext) => href.toLowerCase().endsWith(ext)))
-            .map((href) => decodeURIComponent(href.split('/').pop()))
-            .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
-
-          portfolioCarouselInner.dataset.imageFiles = imageFiles.join('|');
-          buildPortfolioSlides(imageFiles);
-
-          const allSlides = portfolioCarouselInner.querySelectorAll('.carousel-item');
-          if (allSlides.length > 0) {
-            allSlides[0].classList.add('active');
+          const imageFiles = await fetchImageFilesFromDirectory();
+          if (!imageFiles.length) {
+            throw new Error('No se detectaron imágenes en el listado del directorio.');
           }
-
-          if (allSlides.length <= 1) {
-            portfolioCarousel
-              .querySelectorAll('.carousel-control-prev, .carousel-control-next')
-              .forEach((control) => control.classList.add('d-none'));
-          }
-        } catch (error) {
-          console.warn('No se pudieron cargar automáticamente las imágenes del portfolio.', error);
+          renderPortfolio(imageFiles);
+          return;
+        } catch (directoryError) {
+          console.warn('No se pudieron cargar imágenes desde listado de carpeta.', directoryError);
         }
+
+        try {
+          const imageFiles = await fetchImageFilesFromGitHubApi();
+          if (!imageFiles.length) {
+            throw new Error('GitHub API no devolvió imágenes de portfolio.');
+          }
+          renderPortfolio(imageFiles);
+          return;
+        } catch (githubApiError) {
+          console.warn('No se pudieron cargar imágenes desde GitHub API.', githubApiError);
+        }
+
+        renderPortfolio(portfolioFallbackImages);
       };
 
       const setActiveNav = () => {
