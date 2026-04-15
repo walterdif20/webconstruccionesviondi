@@ -210,82 +210,34 @@
           </div>
         </div>
       </section>
-
-      <section id="portfolio" class="py-5">
+    <section id="portfolio" class="py-5">
         <div class="container">
           <p class="section-title text-center">Trabajos destacados</p>
           <h2 class="section-heading text-center">Resultados que reflejan nuestro estándar de calidad</h2>
           <p class="section-subtitle text-center mx-auto">
             Cada obra está pensada para combinar estética, funcionalidad y valor constructivo.
           </p>
-          <div class="portfolio-grid mt-5">
-            <div class="portfolio-item">
-              <img src="images/highligh_img.jpg" alt="Vivienda moderna terminada" />
-              <div class="portfolio-overlay">
-                <span>Residencial</span>
-                <h4>Vivienda premium llave en mano</h4>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="images/portfolio1.jpg" alt="Reforma de cocina" />
-              <div class="portfolio-overlay">
-                <span>Remodelación</span>
-                <h4>Renovación integral de cocina</h4>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="images/portfolio2.jpg" alt="Ampliación de vivienda" />
-              <div class="portfolio-overlay">
-                <span>Ampliación</span>
-                <h4>Galería cubierta y quincho</h4>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="images/portfolio3.jpg" alt="Oficinas corporativas" />
-              <div class="portfolio-overlay">
-                <span>Corporativo</span>
-                <h4>Oficinas modulares de alta prestación</h4>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="images/portfolio4.jpg" alt="Baño moderno con revestimientos" />
-              <div class="portfolio-overlay">
-                <span>Interiorismo</span>
-                <h4>Baños con revestimientos de diseño</h4>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="images/portfolio5.jpg" alt="Fachada comercial renovada" />
-              <div class="portfolio-overlay">
-                <span>Comercial</span>
-                <h4>Refuncionalización de local a la calle</h4>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="images/portfolio6.jpg" alt="Construcción industrial" />
-              <div class="portfolio-overlay">
-                <span>Industrial</span>
-                <h4>Nave logística con estructura metálica</h4>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="images/portfolio7.jpg" alt="Detalle de construcción" />
-              <div class="portfolio-overlay">
-                <span>Detalles</span>
-                <h4>Terminaciones artesanales en hormigón</h4>
-              </div>
-            </div>
-            <div class="portfolio-item">
-              <img src="images/portfolio8.jpg" alt="Terraza moderna" />
-              <div class="portfolio-overlay">
-                <span>Exterior</span>
-                <h4>Terraza con diseño paisajístico</h4>
-              </div>
-            </div>
-          </div>
-        </div>
+ <div id="portfolioCarousel" class="carousel slide mt-5" data-bs-ride="carousel">
+            <div class="carousel-inner" id="portfolio-carousel-inner"></div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#portfolioCarousel"
+              data-bs-slide="prev"
+              aria-label="Imagen anterior"
+            >
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#portfolioCarousel"
+              data-bs-slide="next"
+              aria-label="Imagen siguiente"
+            >
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
       </section>
-
       <section id="contacto" class="py-5">
         <div class="container">
           <div class="contact-cta">
@@ -371,6 +323,77 @@
       const navbar = document.querySelector('.navbar');
       const navLinks = document.querySelectorAll('.nav-link');
       const sections = document.querySelectorAll('section[id], header[id]');
+      const portfolioCarousel = document.getElementById('portfolioCarousel');
+      const portfolioCarouselInner = document.getElementById('portfolio-carousel-inner');
+
+      const portfolioFolder = 'images/portfolio';
+      const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'];
+
+      const stripExtension = (fileName) => fileName.replace(/\.[^.]+$/, '');
+
+      const parseNameParts = (fileName) => {
+        const cleanName = stripExtension(fileName).replace(/_/g, ' ').trim();
+        const dashIndex = cleanName.indexOf('-');
+
+        if (dashIndex === -1) {
+          return { span: cleanName, h4: cleanName };
+        }
+
+        return {
+          span: cleanName.slice(0, dashIndex).trim(),
+          h4: cleanName.slice(dashIndex + 1).trim(),
+        };
+      };
+
+      const buildPortfolioItem = (imageSrc, fileName) => {
+        const { span, h4 } = parseNameParts(fileName);
+        const article = document.createElement('div');
+        article.className = 'carousel-item';
+        article.innerHTML = `
+          <div class="portfolio-item">
+          <img src="${imageSrc}" alt="${h4 || span}" />
+          <div class="portfolio-overlay">
+            <span>${span || 'Proyecto'}</span>
+            <h4>${h4 || span || 'Trabajo realizado'}</h4>
+          </div>
+          </div>
+        `;
+
+        portfolioCarouselInner.appendChild(article);
+      };
+
+      const loadPortfolioImages = async () => {
+        if (!portfolioCarousel || !portfolioCarouselInner) return;
+
+        try {
+          const response = await fetch(`${portfolioFolder}/`);
+          const directoryMarkup = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(directoryMarkup, 'text/html');
+          const links = Array.from(doc.querySelectorAll('a'));
+
+          const imageFiles = links
+            .map((link) => link.getAttribute('href') || '')
+            .filter((href) => imageExtensions.some((ext) => href.toLowerCase().endsWith(ext)))
+            .map((href) => decodeURIComponent(href.split('/').pop()))
+            .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
+
+          imageFiles.forEach((fileName) => buildPortfolioItem(`${portfolioFolder}/${fileName}`, fileName));
+
+          const allSlides = portfolioCarouselInner.querySelectorAll('.carousel-item');
+          if (allSlides.length > 0) {
+            allSlides[0].classList.add('active');
+          }
+
+          if (allSlides.length <= 1) {
+            portfolioCarousel
+              .querySelectorAll('.carousel-control-prev, .carousel-control-next')
+              .forEach((control) => control.classList.add('d-none'));
+          }
+        } catch (error) {
+          console.warn('No se pudieron cargar automáticamente las imágenes del portfolio.', error);
+        }
+      };
 
       const setActiveNav = () => {
         const scrollPos = window.scrollY + 120;
@@ -401,6 +424,7 @@
       window.addEventListener('load', () => {
         handleNavbarBackground();
         setActiveNav();
+        loadPortfolioImages();
       });
     </script>
   </body>
