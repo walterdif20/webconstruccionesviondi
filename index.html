@@ -237,6 +237,8 @@
             >
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
             </button>
+          </div>
+        </div>
       </section>
       <section id="contacto" class="py-5">
         <div class="container">
@@ -345,21 +347,47 @@
         };
       };
 
-      const buildPortfolioItem = (imageSrc, fileName) => {
-        const { span, h4 } = parseNameParts(fileName);
-        const article = document.createElement('div');
-        article.className = 'carousel-item';
-        article.innerHTML = `
-          <div class="portfolio-item">
-          <img src="${imageSrc}" alt="${h4 || span}" />
-          <div class="portfolio-overlay">
-            <span>${span || 'Proyecto'}</span>
-            <h4>${h4 || span || 'Trabajo realizado'}</h4>
-          </div>
-          </div>
-        `;
+      const getSlidesPerView = () => {
+        if (window.matchMedia('(min-width: 1200px)').matches) return 3;
+        if (window.matchMedia('(min-width: 768px)').matches) return 2;
+        return 1;
+      };
 
-        portfolioCarouselInner.appendChild(article);
+      const createPortfolioCard = (imageSrc, fileName) => {
+        const { span, h4 } = parseNameParts(fileName);
+        return `
+          <article class="portfolio-item">
+            <img src="${imageSrc}" alt="${h4 || span}" />
+            <div class="portfolio-overlay">
+              <span>${span || 'Proyecto'}</span>
+              <h4>${h4 || span || 'Trabajo realizado'}</h4>
+            </div>
+          </article>
+        `;
+      };
+
+      const buildPortfolioSlides = (imageFiles) => {
+        if (!portfolioCarouselInner) return;
+
+        portfolioCarouselInner.innerHTML = '';
+
+        const slidesPerView = getSlidesPerView();
+
+        for (let i = 0; i < imageFiles.length; i += slidesPerView) {
+          const slide = document.createElement('div');
+          slide.className = 'carousel-item';
+
+          const chunk = imageFiles.slice(i, i + slidesPerView);
+          slide.innerHTML = `
+            <div class="portfolio-slide-grid" style="--columns: ${chunk.length};">
+              ${chunk
+                .map((fileName) => createPortfolioCard(`${portfolioFolder}/${fileName}`, fileName))
+                .join('')}
+            </div>
+          `;
+
+          portfolioCarouselInner.appendChild(slide);
+        }
       };
 
       const loadPortfolioImages = async () => {
@@ -378,7 +406,8 @@
             .map((href) => decodeURIComponent(href.split('/').pop()))
             .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
 
-          imageFiles.forEach((fileName) => buildPortfolioItem(`${portfolioFolder}/${fileName}`, fileName));
+          portfolioCarouselInner.dataset.imageFiles = imageFiles.join('|');
+          buildPortfolioSlides(imageFiles);
 
           const allSlides = portfolioCarouselInner.querySelectorAll('.carousel-item');
           if (allSlides.length > 0) {
@@ -425,6 +454,23 @@
         handleNavbarBackground();
         setActiveNav();
         loadPortfolioImages();
+      });
+
+      window.addEventListener('resize', () => {
+        if (!portfolioCarouselInner || !portfolioCarouselInner.dataset.imageFiles) return;
+
+        const imageFiles = portfolioCarouselInner.dataset.imageFiles
+          .split('|')
+          .map((fileName) => fileName.trim())
+          .filter(Boolean);
+
+        if (imageFiles.length === 0) return;
+
+        buildPortfolioSlides(imageFiles);
+        const slides = portfolioCarouselInner.querySelectorAll('.carousel-item');
+        if (slides.length > 0) {
+          slides[0].classList.add('active');
+        }
       });
     </script>
   </body>
