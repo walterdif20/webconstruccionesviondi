@@ -342,6 +342,20 @@ img {
     gap: 1rem;
 }
 
+
+.portfolio-slide-grid {
+    --columns: 1;
+    display: grid;
+    grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+    gap: 1rem;
+    padding: 0.2rem;
+}
+
+#portfolioCarousel .carousel-control-prev,
+#portfolioCarousel .carousel-control-next {
+    width: 7%;
+}
+
 .portfolio-item {
     position: relative;
     overflow: hidden;
@@ -484,6 +498,11 @@ footer {
 }
 
 @media (max-width: 767px) {
+    #portfolioCarousel .carousel-control-prev,
+    #portfolioCarousel .carousel-control-next {
+        width: 12%;
+    }
+
     .hero-title {
         font-size: clamp(1.95rem, 8vw, 2.75rem);
     }
